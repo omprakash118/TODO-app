@@ -3,7 +3,7 @@ import { CheckSquare } from "lucide-react";
 
 export default function LoginHead(){
     return(
-        <div className="flex flex-col justify-center items-center gap-4">
+        <div className="flex flex-col justify-center items-center gap-4 mt-4">
             <div className="h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 flex justify-center items-center rounded-xl shadow-lg">
                 <CheckSquare className="w-8 h-8 text-white"/> 
             </div>
