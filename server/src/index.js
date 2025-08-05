@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const conectDB = require('./config/db.js');
 const { app } = require('./app.js');
+const PORT = process.env.PORT || 8000;
 
 dotenv.config({
     path : './.env'
@@ -8,9 +9,9 @@ dotenv.config({
 
 conectDB()
 .then(() => {
-    app.listen(process.env.PORT || 3000, ()=>{
-        console.log(`⚙️ Server is running on port ${process.env.PORT}`);
+    app.listen(PORT, ()=>{
+        console.log(`⚙️ Server is running on port ${PORT}`);
     });
-}).catch(() => {
+}).catch((error) => {
     console.error('Error starting server:', error);
 });
