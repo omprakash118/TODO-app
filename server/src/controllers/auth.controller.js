@@ -10,6 +10,7 @@ const loginUser = asyncHandler(async (req,res) => {
 
 })
 
+
 const registerUser = asyncHandler(async (req,res) => {
     res.status(200).json({
         message : 'Hello bab from the register User'
