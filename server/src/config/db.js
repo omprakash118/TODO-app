@@ -6,15 +6,15 @@ console.log(DB_NAME);
 const conectDB = async () => {
     try {
         
-        const uri = `${process.env.MONGO_URL}/${DB_NAME}`
-        console.log(`Uri is - ${uri}`);
+        await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
 
-        const connectionInstance = await mongoose.connect(uri);
-
-        console.log(` MongoDB Connected !! DB_HOST :- ${connectionInstance.connection.host}`);
-
+        // console.log(` MongoDB Connected !! DB_HOST :- ${connectionInstance.connection.host}`);
+        console.log("✅ MongoDB Atlas connected successfully");
     } catch (error) {
-        console.error('MongoDB Connection Failed - ', error) 
+        console.error('❌ MongoDB Connection Failed - ', error) 
         process.exit(1); // Exit process with failure
     }
 }
