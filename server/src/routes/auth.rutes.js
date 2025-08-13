@@ -1,6 +1,6 @@
 const Router = require('express');
 const router = Router();
-
+const verifyJWT = require('../middleware/auth.middleware');
 
 const {
     loginUser,
@@ -11,7 +11,7 @@ const {
 
 // router.get('/' , getAllUser);
 
-router.route('/login').post(loginUser);
+router.route('/login').post( verifyJWT ,loginUser);
 router.route('/register').post(registerUser);
 router.route('/logout').post(logout);
 

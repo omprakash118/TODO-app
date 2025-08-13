@@ -7,12 +7,11 @@ const {
     deleteUser,
     updateUserById
 } = require('../controllers/user.controller.js');
-const { route } = require('./auth.rutes');
 
 
 router.route('/').get(getAllUser);
-router.route('/:id').get(getUserById);
+router.route('/:userId').get(getUserById);
 router.route('/:id').delete(deleteUser);
-router.route('/:id').patch(updateUserById);
+router.route('/:userID').patch(updateUserById);
 
 module.exports = router;

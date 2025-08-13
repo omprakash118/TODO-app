@@ -10,6 +10,12 @@ const getAllTask = asyncHandler(async (req,res) => {
 })
 
 const createTask = asyncHandler(async (req,res) => {
+
+    const io = req.app.get("io");
+
+    io.emit("taskCreated", {
+        message : "A new task was created"
+    });
     res.status(200).json({
         message : "Hello Bab from Create Task"
     })

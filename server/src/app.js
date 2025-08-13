@@ -2,6 +2,13 @@ const express = require('express');
 // dotenv.require()
 const app = express();
 
+
+// ✅ Parse JSON bodies
+app.use(express.json());
+
+// ✅ Parse URL-encoded bodies (form submissions)
+app.use(express.urlencoded({ extended: true }));
+
 const authRoutes = require('./routes/auth.rutes.js');
 const userRoutes = require('./routes/user.routes.js');
 const taskRoutes = require('./routes/task.routes.js');
