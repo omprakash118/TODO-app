@@ -11,9 +11,9 @@ const {
 
 // router.get('/' , getAllUser);
 
-router.route('/login').post( verifyJWT ,loginUser);
+router.route('/login').post( loginUser);
 router.route('/register').post(registerUser);
-router.route('/logout').post(logout);
+router.route('/logout').post(verifyJWT ,logout);
 
 
 

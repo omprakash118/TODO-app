@@ -11,7 +11,7 @@ const {
 
 router.route('/').get(getAllUser);
 router.route('/:userId').get(getUserById);
-router.route('/:id').delete(deleteUser);
+router.route('/:userId').delete(deleteUser);
 router.route('/:userID').patch(updateUserById);
 
 module.exports = router;
