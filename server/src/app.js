@@ -1,7 +1,12 @@
 const express = require('express');
+const cors = require("cors");
 // dotenv.require()
 const app = express();
 
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 // ✅ Parse JSON bodies
 app.use(express.json());

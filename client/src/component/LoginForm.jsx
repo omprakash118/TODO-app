@@ -10,6 +10,39 @@ export default function LoginForm() {
 
   const togglePassword = () => setShowPassword(!showPassword);
 
+  const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+          
+          const response = await fetch('http://localhost:8000/api/login', {
+            method : "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body : JSON.stringify({ email , password}),
+          });
+
+          const data = await response.json();
+
+          if(!response.ok) throw new Error(data.message || "Failed Login");
+
+          console.log("✅ Login success:", data);
+
+          if(data.accessToken) localStorage.setItem("accessToken" , data.accessToken);
+
+          alert("Login successful 🎉")
+
+        } catch (error) {
+          console.error("❌ Login error:", err);
+          alert(err.message);
+        }finally {
+          setIsLoading(false);
+        }
+  }
+
   return (
     <div className="max-w-md mx-auto bg-white/80 backdrop-blur-md shadow-xl rounded-2xl p-8 space-y-6">
       {/* Header */}
@@ -19,11 +52,8 @@ export default function LoginForm() {
       </div>
 
       {/* Form */}
-      <form className="space-y-5" onSubmit={(e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 2000); // Dummy delay
-      }}>
+
+      <form className="space-y-5" onSubmit={handleSubmit}>
         {/* Email */}
         <div className="space-y-1">
           <label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</label>
