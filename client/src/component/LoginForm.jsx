@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Mail, Eye, EyeOff, Lock } from "lucide-react";
 import Buttons from "./ui/Buttons";
+import { useNavigate , Link } from "react-router-dom";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const togglePassword = () => setShowPassword(!showPassword);
 
@@ -35,6 +37,7 @@ export default function LoginForm() {
 
           alert("Login successful 🎉")
 
+          navigate('/dashboard');
         } catch (err) {
           console.error("❌ Login error:", err);
           alert(err.message);
@@ -116,9 +119,9 @@ export default function LoginForm() {
       {/* Divider or bottom */}
       <div className="text-center text-sm text-gray-500">
         Don’t have an account?{" "}
-        <a href="#" className="text-purple-600 hover:underline font-medium">
+        <Link to="/register" className="text-purple-600 hover:underline font-medium">
           Sign up
-        </a>
+        </Link>
       </div>
     </div>
   );

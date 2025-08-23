@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import LoginHead from "../component/LoginHead";
 import { User, Eye, EyeOff, Mail, Lock, Check, X } from "lucide-react";
 import Buttons from "../component/ui/Buttons";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -155,9 +156,9 @@ export default function Register() {
           {/* Divider or bottom */}
           <div className="text-center text-sm text-gray-500">
             You have an account?{" "}
-            <a href="#" className="text-purple-600 hover:underline font-medium">
+            <Link to="/login" className="text-purple-600 hover:underline font-medium">
               Sign in
-            </a>
+            </Link>
           </div>
         </div>
       </div>
