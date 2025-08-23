@@ -35,7 +35,7 @@ export default function LoginForm() {
 
           alert("Login successful 🎉")
 
-        } catch (error) {
+        } catch (err) {
           console.error("❌ Login error:", err);
           alert(err.message);
         }finally {
