@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 const authRoutes = require('./routes/auth.rutes.js');
 const userRoutes = require('./routes/user.routes.js');
 const taskRoutes = require('./routes/task.routes.js');
+const groupRoutes = require('./routes/group.rutes.js');
 
 app.get('/' , (req, res) => {
     res.send("Hello Om");
@@ -29,6 +30,7 @@ app.get('/home' , (req,res) => {
 app.use('/api', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/task' , taskRoutes);
+app.use('/api/group', groupRoutes);
 
 
 module.exports = {app};

@@ -1,12 +1,11 @@
 const ApiError = require('../utils/ApiError.js');
 const ApiResponse = require('../utils/ApiResponse.js');
 const asyncHandler = require('../utils/asyncHandler.js');
-
+const Task = require("../models/task.models.js");
 
 const getAllTask = asyncHandler(async (req,res) => {
-    res.status(200).json({
-        message : " Hello Bab from Get All Task"
-    })
+    const task = await Task.find();
+    return res.status(200).json(new ApiResponse(200, task ,"ALL Task Find Successfully"));
 })
 
 const createTask = asyncHandler(async (req,res) => {

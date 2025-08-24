@@ -18,6 +18,16 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true
     },
+    createdByGroups : [{
+        type : mongoose.Schema.ObjectId,
+        ref : 'Group',
+        default: []
+    }],
+    groups : [{
+        type : mongoose.Schema.ObjectId,
+        ref : 'Group',
+        default: []
+    }],
     refreshToken : {
         type : String,
         default : ''
