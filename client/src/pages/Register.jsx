@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import LoginHead from "../component/LoginHead";
 import { User, Eye, EyeOff, Mail, Lock, Check, X } from "lucide-react";
 import Buttons from "../component/ui/Buttons";
+import { useNavigate ,Link } from "react-router-dom";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,6 +12,7 @@ export default function Register() {
     email : '',
     password : '',
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setformData({
@@ -42,6 +44,8 @@ export default function Register() {
         alert("✅ Registration success:");
 
         console.log("✅ Registration success:", data);
+
+        navigate('/dashboard');
 
       } catch (error) {
         console.log("❌ User not created :- ", error);
@@ -155,9 +159,9 @@ export default function Register() {
           {/* Divider or bottom */}
           <div className="text-center text-sm text-gray-500">
             You have an account?{" "}
-            <a href="#" className="text-purple-600 hover:underline font-medium">
+            <Link to="/login" className="text-purple-600 hover:underline font-medium">
               Sign in
-            </a>
+            </Link>
           </div>
         </div>
       </div>
