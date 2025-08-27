@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
         ref : 'Group',
         default: []
     }],
+    tasks : [{
+        type : mongoose.Schema.ObjectId,
+        ref : 'Task',
+        default : []
+    }],
     refreshToken : {
         type : String,
         default : ''

@@ -5,26 +5,37 @@ const taskSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    description : String,
-    taskStatus : {
+    description : {
         type : String,
-        default : 'pending'
+        default : ""
+    }, 
+    group : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Group',
+        required : true
     },
     priority : {
         type : String,
         enum : ['low' , 'medium' , 'high'],
         default : 'medium'
     },
-    dueDate : Date,
-    tag : [String],
+    status: {
+        type: String,
+        enum: ["pending", "in-progress", "completed"],
+        default: "pending"
+    },
+    dueDate: {
+        type: Date
+    },
     createdBy : {
         type : mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
-    assignTo : {
+    assignTo : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User'
-    },
+    }],
 }, {timestamps : true});
 
 const Task = mongoose.model( 'Task' ,taskSchema);

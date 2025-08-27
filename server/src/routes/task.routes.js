@@ -12,7 +12,7 @@ const {
 
 router.route('/').get(getAllTask);
 router.route('/').post(createTask);
-router.route('/:id').patch(updateTask);
-router.route('/:id').delete(deleteTask);
+router.route('/:taskID').patch(updateTask);
+router.route('/:taskID').delete(deleteTask);
 
 module.exports = router;
