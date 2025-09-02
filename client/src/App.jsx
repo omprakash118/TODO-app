@@ -3,7 +3,7 @@ import './globle.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from './pages/Login'
 import Register from './pages/Register'
-import Dashboard from './pages/Dashboard'
+import Home from './pages/Home'
 
 function App() {
   
@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path='/login' element={ <LoginPage /> } />
         <Route path='/Register' element={ <Register /> } />
-        <Route path='/Dashboard' element={ <Dashboard /> } />
+        <Route path='/Dashboard' element={ <Home /> } />
         <Route path='/' element={<Navigate to = "/login" />} />
       </Routes>
     </BrowserRouter>
@@ -23,4 +23,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

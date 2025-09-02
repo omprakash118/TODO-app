@@ -1,12 +1,12 @@
 // components/SubmitButton.jsx
 import React from "react";
 
-function Buttons({ isLoading = false, type = "submit" , btnName = 'Submit' , loadingText = 'Submiting...' }) {
+function Btns({ isLoading = false, type = "submit" , btnName = 'Submit' , loadingText = 'Submiting...' }) {
   return (
     <button
       type={type}
       disabled={isLoading}
-      className="w-full py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] focus:scale-[0.98] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+      className="w-auto py-2 px-4 bg-[#3c83f6] text-[#f3f4f6] font-semibold rounded-lg hover:scale-[1.02] focus:scale-[0.98] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
     >
       {isLoading ? (
         <div className="flex items-center justify-center space-x-2">
@@ -20,4 +20,4 @@ function Buttons({ isLoading = false, type = "submit" , btnName = 'Submit' , loa
   );
 }
 
-export default Buttons;
+export default Btns;

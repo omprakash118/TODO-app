@@ -1,13 +1,15 @@
 import React from "react";
 
-import Navbar from "../component/Navbar";
+
 import MainComponent from "../component/MainComponent";
 
-export default function Dashboard(){
+function Home(){
     return (
         <>
-        <Navbar />
-        <MainComponent  />
+            <MainComponent  />
         </>
     )
-}
+};
+
+
+export default Home;
