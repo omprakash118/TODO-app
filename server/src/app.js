@@ -25,7 +25,7 @@ app.get('/' , (req, res) => {
 
 app.get('/home' , (req,res) => {
     res.send("This is the home page ");
-})
+}) 
 
 app.use('/api', authRoutes);
 app.use('/api/user', userRoutes);

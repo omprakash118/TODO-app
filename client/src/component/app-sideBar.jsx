@@ -12,15 +12,7 @@ export function Sidebar({ open , setOpen }){
                 className={`bg-[#f3f4f6] text-[#3c83f6] h-screen fixed top-0 left-0 transition-all duration-300 ease-in-out ${open ? "w-64" : "w-16"}`}
             >
             
-                {/* <div className="flex items-center justify-between p-4">
-                    {open && <h1 className="text-lg font-bold">TaskFlow</h1>}
-                    <button
-                        onClick={() => setOpen(!open)}
-                        className="p-2 rounded hover:bg-gray-800"
-                    >
-                        <Menu size={20} />
-                    </button>
-                </div> */}
+               
                 
                 {/* Header */}
                 <div className="p-4 border-b text-gray-200 flex flex-row justify-between items-center">
