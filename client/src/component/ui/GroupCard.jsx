@@ -63,30 +63,23 @@ export default function GroupCard({
                 <p className="text-[#94a3b8] text-xs mt-1">{description}</p>
             </div>
             
-            <div className="flex flex-row gap-2">
-                <div className="flex flex-row gap-2">
-                    <h1 className="text-sm font-semibold">Members</h1>
-                    <p className="text-[#94a3b8] text-xs mt-1">{members.length}</p>
+                <div className="flex flex-row gap-2 justify-between items-center">
+                    <h1 className="text-sm  text-[#94a3b8]">Members</h1>
+                    <p className="  text-xs mt-1">{members.length}</p>
                 </div>
-            </div>
-            <div className="flex flex-row gap-2">
-                <div className="flex flex-row gap-2">
-                    <h1 className="text-sm font-semibold">Tasks</h1>
-                    <p className="text-[#94a3b8] text-xs mt-1">{tasks.length}</p>
+         
+                <div className="flex flex-row gap-2 justify-between items-center">
+                    <h1 className="text-sm  text-[#94a3b8]">Tasks</h1>
+                    <p className="text-xs mt-1">{tasks.length}</p>
                 </div>
-            </div>
-            <div className="flex flex-row gap-2">
-                <div className="flex flex-row gap-2">
-                    <h1 className="text-sm font-semibold">Created At</h1>
-                    <p className="text-[#94a3b8] text-xs mt-1">{handleDate(createdAt)}</p>
+                <div className="flex flex-row gap-2 justify-between items-center">
+                    <h1 className="text-sm  text-[#94a3b8]">Created At</h1>
+                    <p className="  text-xs mt-1">{handleDate(createdAt)}</p>
                 </div>
-            </div>
-            <div className="flex flex-row gap-2">
-                <div className="flex flex-row gap-2">
-                    <h1 className="text-sm font-semibold">Created By</h1>
-                    <p className="text-[#94a3b8] text-xs mt-1">{createdBy}</p>
+                <div className="flex flex-row gap-2 justify-between items-center">
+                    <h1 className="text-sm  text-[#94a3b8]">Created By</h1>
+                    <p className="  text-xs mt-1">{createdBy}</p>
                 </div>
-            </div>
         </div>
     )
 }
