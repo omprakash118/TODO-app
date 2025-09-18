@@ -1,8 +1,11 @@
 import React , {useState, useEffect} from "react";
+import { Routes, Route } from "react-router-dom";
 import { Sidebar } from "../component/app-sideBar";
 import Navbar from "./Navbar";
+import Dashboard from "../pages/Dashboard";
+import Task from "../pages/Task";
+import Groups from "../pages/Groups";
 
-import Mainpart from "./Mainpart";
 
 function MainComponent(){
   const [ sidebarOpen , setSidebarOpen ] = useState(true);
@@ -32,7 +35,12 @@ function MainComponent(){
               <Navbar open={sidebarOpen} setOpen={setSidebarOpen} /> 
               <div className="mt-16">
                 <main>
-                  <Mainpart />
+                  <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/tasks" element={<Task />} />
+                    <Route path="/groups" element={<Groups />} />
+                  </Routes>
                 </main>
               </div>
           </div>

@@ -1,6 +1,7 @@
 import React from "react";
-import { LayoutDashboard, CheckSquare, Users , PanelRight, PanelLeft} from "lucide-react";
+import { LayoutDashboard, CheckSquare, Users , PanelRight} from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 export function Sidebar({ open , setOpen, isMobile }){
@@ -33,19 +34,19 @@ export function Sidebar({ open , setOpen, isMobile }){
 
                 <nav className={`flex flex-col gap-2 mt-2 `}>
                     {open && <h1 className="p-4 text-gray-800 ">Main</h1>}
-                    <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" open={open} />
-                    <SidebarItem icon={<CheckSquare size={20} />} label="Tasks" open={open} />
-                    <SidebarItem icon={<Users size={20} />} label="Groups" open={open} />
+                    <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" open={open} to="/dashboard" />
+                    <SidebarItem icon={<CheckSquare size={20} />} label="Tasks" open={open} to="/tasks" />
+                    <SidebarItem icon={<Users size={20} />} label="Groups" open={open} to="/groups" />
                 </nav>
         </aside>
     )
 }
 
-function SidebarItem({icon,label, open}){
+function SidebarItem({icon,label, open, to}){
     return (
-        <button className={`flex items-center gap-3  rounded-lg hover:bg-gray-50 hover:text-gray-800 cursor-pointer ${open ? 'py-2 px-4 mx-4' : 'mx-2 p-2  justify-center'} `} >
+        <Link to={to} className={`flex items-center gap-3  rounded-lg hover:bg-gray-50 hover:text-gray-800 cursor-pointer ${open ? 'py-2 px-4 mx-4' : 'mx-2 p-2  justify-center'} `} >
             {icon}
             {open && <span>{label}</span>}
-        </button>
+        </Link>
     )
 }
