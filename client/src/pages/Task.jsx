@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Btns from "../component/ui/Btns";
 import HeadingTask from "../component/ui/HeadingTask";
 import SearchBar from "../component/ui/SearchBar";
+import CreateTaskModal from "../component/ui/CreateTaskModal";
 
 export default function Task(){
+    const [isLoading, setIsLoading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleCreateTask = (taskData) => {
+        console.log("Creating task:", taskData);
+        // Here you would typically send the data to your API
+        // For now, we'll just log it
+        setIsLoading(true);
+        
+        // Simulate API call
+        setTimeout(() => {
+            setIsLoading(false);
+            console.log("Task created successfully!");
+        }, 1000);
+    };
     return(
         <div className="p-5">
             <div className="flex justify-between items-center" >
@@ -12,7 +27,12 @@ export default function Task(){
                     <p className="text-gray-500 mt-[-5px]">Manage your tasks and track team productivity</p>
                 </div>
                 <div>
-                    <Btns btnName="+ Create Task" />
+                    <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                        >
+                            + Create Task
+                        </button>
                 </div>
             </div>
             <div>
@@ -23,7 +43,12 @@ export default function Task(){
                 <HeadingTask title="In Progress" />
                 <HeadingTask title="Completed"/>
             </div>
-            
+            <CreateTaskModal 
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleCreateTask}
+            />
+
         </div>
     )
 }
