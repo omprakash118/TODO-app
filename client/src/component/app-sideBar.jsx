@@ -1,7 +1,7 @@
 import React from "react";
 import { LayoutDashboard, CheckSquare, Users , PanelRight} from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 
 export function Sidebar({ open , setOpen, isMobile }){
@@ -42,11 +42,33 @@ export function Sidebar({ open , setOpen, isMobile }){
     )
 }
 
-function SidebarItem({icon,label, open, to}){
+function SidebarItem({icon, label, open, to}){
+    const location = useLocation();
+    const isActive = location.pathname === to || (to === '/dashboard' && location.pathname === '/');
+    
     return (
-        <Link to={to} className={`flex items-center gap-3  rounded-lg hover:bg-gray-50 hover:text-gray-800 cursor-pointer ${open ? 'py-2 px-4 mx-4' : 'mx-2 p-2  justify-center'} `} >
-            {icon}
-            {open && <span>{label}</span>}
+        <Link 
+            to={to} 
+            className={`flex items-center gap-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                open ? 'py-2 px-4 mx-4' : 'mx-2 p-2 justify-center'
+            } ${
+                isActive 
+                    ? 'bg-blue-100 text-blue-700 border-r-2 border-blue-700' 
+                    : 'hover:bg-gray-50 hover:text-gray-800 text-gray-600'
+            }`}
+        >
+            <div className={`transition-colors duration-200 ${
+                isActive ? 'text-blue-700' : 'text-gray-500'
+            }`}>
+                {icon}
+            </div>
+            {open && (
+                <span className={`font-medium transition-colors duration-200 ${
+                    isActive ? 'text-blue-700' : 'text-gray-700'
+                }`}>
+                    {label}
+                </span>
+            )}
         </Link>
     )
 }
