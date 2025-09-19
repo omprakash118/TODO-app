@@ -141,5 +141,5 @@ module.exports = {
     deleteGroup,
     getGroupById,
     addMembers,
-    removeMembers
+    removeMembers,
 };

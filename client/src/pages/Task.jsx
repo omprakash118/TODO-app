@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Btns from "../component/ui/Btns";
 import HeadingTask from "../component/ui/HeadingTask";
 import SearchBar from "../component/ui/SearchBar";
 import CreateTaskModal from "../component/ui/CreateTaskModal";
+import axios from "axios";
 
 export default function Task(){
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [pendingTasks, setPendingTasks] = useState([]);
+    const [inProgressTasks, setInProgressTasks] = useState([]);
+    const [completedTasks, setCompletedTasks] = useState([]);
+
+
+    useEffect(() => {
+        getTasks();
+    }, [])
+
+    const getTasks = async () => {      
+        const response = await axios.get('api/task');
+        const data = response.data.data;
+        setPendingTasks(data.filter(task => task.status === "pending"));
+        setInProgressTasks(data.filter(task => task.status === "in-progress"));
+        setCompletedTasks(data.filter(task => task.status === "completed"));
+    }
+
     const handleCreateTask = (taskData) => {
         console.log("Creating task:", taskData);
         // Here you would typically send the data to your API
@@ -39,9 +57,9 @@ export default function Task(){
                 <SearchBar />
             </div>
             <div className="mt-6 flex flex-col gap-6">
-                <HeadingTask title="Pending" />
-                <HeadingTask title="In Progress" />
-                <HeadingTask title="Completed"/>
+                <HeadingTask title="Pending" tasks={pendingTasks} />
+                <HeadingTask title="In Progress" tasks={inProgressTasks} />
+                <HeadingTask title="Completed" tasks={completedTasks} />
             </div>
             <CreateTaskModal 
                 isOpen={isModalOpen}

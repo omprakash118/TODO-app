@@ -37,7 +37,6 @@ const handleDate = (dateString) => {
 
 export default function GroupCard({
     title = '',
-    description = '',
     members = [],
     tasks = [],
     createdAt = '',
@@ -60,7 +59,6 @@ export default function GroupCard({
                     </button>
                 </div>
                 </div>
-                <p className="text-[#94a3b8] text-xs mt-1">{description}</p>
             </div>
             
                 <div className="flex flex-row gap-2 justify-between items-center">
@@ -78,7 +76,7 @@ export default function GroupCard({
                 </div>
                 <div className="flex flex-row gap-2 justify-between items-center">
                     <h1 className="text-sm  text-[#94a3b8]">Created By</h1>
-                    <p className="  text-xs mt-1">{createdBy}</p>
+                    <p className="  text-xs mt-1">{createdBy.FirstName + " " + createdBy.LastName}</p>
                 </div>
         </div>
     )

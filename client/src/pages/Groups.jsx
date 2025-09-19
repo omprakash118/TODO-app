@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GroupCard from "../component/ui/GroupCard";
 import { useState } from "react";
 import CreateGroup from "../component/ui/CreateGroup";
+import axios from "axios";
 
 export default function Groups(){
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [groups, setGroups] = useState([]);
+
+    useEffect(() => {
+        getGroups();
+    }, []);
+
+    const getGroups = async () => {
+        const response = await axios.get('api/group');
+        const data = response.data.data;
+        console.log("Groups :- ", data);
+        setGroups(data);
+    }
+
     const handleCreateGroup = (groupData) => {
         console.log("Creating group:", groupData);
         setIsLoading(true);
@@ -31,14 +45,9 @@ export default function Groups(){
                     </div>
             </div>
             <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-                <GroupCard title="Group 1" description="Group 1 description" members={["Member 1", "Member 2", "Member 3"]} tasks={["Task 1", "Task 2", "Task 3"]} createdAt="2025-09-18" createdBy="John Doe"/>
-                <GroupCard title="Group 2" description="Group 2 description" members={["Member 1", "Member 2", "Member 3"]} tasks={["Task 1", "Task 2", "Task 3"]} createdAt="2025-09-15" createdBy="John Doe"/>
-                <GroupCard title="Group 3" description="Group 3 description" members={["Member 1", "Member 2", "Member 3"]} tasks={["Task 1", "Task 2", "Task 3"]} createdAt="2025-09-14" createdBy="John Doe"/>
-                <GroupCard title="Group 3" description="Group 3 description" members={["Member 1", "Member 2", "Member 3"]} tasks={["Task 1", "Task 2", "Task 3"]} createdAt="2025-09-14" createdBy="John Doe"/>
-                <GroupCard title="Group 3" description="Group 3 description" members={["Member 1", "Member 2", "Member 3"]} tasks={["Task 1", "Task 2", "Task 3"]} createdAt="2025-09-14" createdBy="John Doe"/>
-                <GroupCard title="Group 3" description="Group 3 description" members={["Member 1", "Member 2", "Member 3"]} tasks={["Task 1", "Task 2", "Task 3"]} createdAt="2025-09-14" createdBy="John Doe"/>
-                <GroupCard title="Group 3" description="Group 3 description" members={["Member 1", "Member 2", "Member 3"]} tasks={["Task 1", "Task 2", "Task 3"]} createdAt="2025-09-14" createdBy="John Doe"/>
-                <GroupCard title="Group 3" description="Group 3 description" members={["Member 1", "Member 2", "Member 3"]} tasks={["Task 1", "Task 2", "Task 3"]} createdAt="2025-09-14" createdBy="John Doe"/>
+                {groups.map((group) => (
+                    <GroupCard  title={group.title}  members={group.members} tasks={group.tasks} createdAt={group.createdAt} createdBy={group.createdBy}/>
+                ))}
             </div>
             <CreateGroup 
                 isOpen={isModalOpen} 

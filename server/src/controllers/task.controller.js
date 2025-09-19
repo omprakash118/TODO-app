@@ -7,6 +7,7 @@ const User = require('../models/user.models.js');
 
 const getAllTask = asyncHandler(async (req,res) => {
     const task = await Task.find()
+        .populate("group", "title")
         .populate("assignTo", "FirstName LastName")
         .populate("createdBy", "FirstName LastName");
     ;
@@ -52,7 +53,12 @@ const createTask = asyncHandler(async (req,res) => {
       { $addToSet : { tasks : task._id}}
     );
 
+    await Group.findByIdAndUpdate(groupID, {
+        $addToSet : { tasks : task._id}
+    });
+
     const populateTask = await Task.findById(task._id)
+            .populate("group", "title")
             .populate("assignTo", "FirstName LastName")
             .populate("createdBy", "FirstName LastName");
 
@@ -110,6 +116,7 @@ const createTask = asyncHandler(async (req,res) => {
 //     });
 
 //     const updatedTask = await Task.findByIdAndUpdate(taskID , updatedOps , { $new : true})
+//         .populate("group", "title")
 //         .populate("assignTo", "FirstName LastName")
 //         .populate("createdBy", "FirstName LastName");
     
@@ -164,6 +171,11 @@ const updateTask = asyncHandler(async (req, res) => {
   if (!updatedTask) {
     throw new ApiError(404, "Task not found");
   }
+
+  updatedTask = await Task.findById(taskID) 
+    .populate("group", "title")
+    .populate("assignTo", "FirstName LastName")
+    .populate("createdBy", "FirstName LastName");
 
   return res.status(200).json({
     success: true,
