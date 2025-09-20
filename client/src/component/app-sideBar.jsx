@@ -34,21 +34,22 @@ export function Sidebar({ open , setOpen, isMobile }){
 
                 <nav className={`flex flex-col gap-2 mt-2 `}>
                     {open && <h1 className="p-4 text-gray-800 ">Main</h1>}
-                    <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" open={open} to="/dashboard" />
-                    <SidebarItem icon={<CheckSquare size={20} />} label="Tasks" open={open} to="/tasks" />
-                    <SidebarItem icon={<Users size={20} />} label="Groups" open={open} to="/groups" />
+                    <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" open={open} to="/dashboard" onClick={() => { if(isMobile) setOpen(false)}} />
+                    <SidebarItem icon={<CheckSquare size={20} />} label="Tasks" open={open} to="/tasks" onClick={() => { if(isMobile) setOpen(false)}} />
+                    <SidebarItem icon={<Users size={20} />} label="Groups" open={open} to="/groups" onClick={() => { if(isMobile) setOpen(false)}} />
                 </nav>
         </aside>
     )
 }
 
-function SidebarItem({icon, label, open, to}){
+function SidebarItem({icon, label, open, to, onClick}){
     const location = useLocation();
     const isActive = location.pathname === to || (to === '/dashboard' && location.pathname === '/');
     
     return (
         <Link 
             to={to} 
+            onClick={onClick}
             className={`flex items-center gap-3 rounded-lg cursor-pointer transition-all duration-200 ${
                 open ? 'py-2 px-4 mx-4' : 'mx-2 p-2 justify-center'
             } ${

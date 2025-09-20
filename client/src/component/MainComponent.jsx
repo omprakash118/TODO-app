@@ -36,10 +36,10 @@ function MainComponent(){
               <div className="mt-16">
                 <main>
                   <Routes>
-                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/" element={<Dashboard />}  />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/tasks" element={<Task />} />
-                    <Route path="/groups" element={<Groups />} />
+                    <Route path="/tasks" element={<Task />}  />
+                    <Route path="/groups" element={<Groups />}  />
                   </Routes>
                 </main>
               </div>
