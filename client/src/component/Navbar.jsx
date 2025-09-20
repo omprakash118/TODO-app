@@ -17,13 +17,12 @@ function Navbar({ open, setOpen }) {
       });
       const data = await response.data;
       console.log("Data :- ", data);
+      localStorage.removeItem("userID");
       toast.success(data.message);
       navigate("/login");
     } catch (error) {
       toast.error(error.message);
     }
-    // toast.success("Logout successful");
-    // navigate("/login");
   };
   
   return (

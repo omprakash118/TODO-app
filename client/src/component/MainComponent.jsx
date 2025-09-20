@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import Dashboard from "../pages/Dashboard";
 import Task from "../pages/Task";
 import Groups from "../pages/Groups";
+import GroupDetailspage from "./groupDetailspage";
 
 
 function MainComponent(){
@@ -40,6 +41,7 @@ function MainComponent(){
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/tasks" element={<Task />}  />
                     <Route path="/groups" element={<Groups />}  />
+                    <Route path="/group/:groupID" element={<GroupDetailspage />}  />
                   </Routes>
                 </main>
               </div>

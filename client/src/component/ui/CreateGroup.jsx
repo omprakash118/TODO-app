@@ -1,43 +1,33 @@
-import React, { useState } from "react";
-import { X, Users, ChevronDown } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { X, Users, User } from "lucide-react";
 import { useScrollLock } from "../../hooks/useScrollLock";
+import axios from "axios";
+
 export default function CreateGroup({ isOpen, onClose, onSubmit }){
 
     const [formData, setFormData] = useState({
         title: "",
         members:[],
+        createdBy: "",
     });
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    
-    const users = [
-        {
-            _id: "1",
-            FirstName: "John",
-            LastName: "Doe",
-        },
-        {
-            _id: "2",
-            FirstName: "Jane",
-            LastName: "Doe",
-        },
-        {
-            _id: "3",
-            FirstName: "Jim",
-            LastName: "Beam",
-        },
-        {
-            _id: "4",
-            FirstName: "Jill",
-            LastName: "Doe",
-        },
-        {
-            _id: "5",
-            FirstName: "Jack",
-            LastName: "Doe",
-        },
-    ];
+    let userID;
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        userID = localStorage.getItem("userID");
+        formData.createdBy = userID;
+        // console.log("User ID :- ", userID);
+        const fetchUsers = async () => {
+            const response = await axios.get("api/user");
+            const data = response.data.data;
+            const filteredUsers = data.filter(user => user._id !== userID);
+            setUsers(filteredUsers);
+            // console.log("Users :- ", filteredUsers);
+        }
+        fetchUsers();
+    }, []);
 
     useScrollLock(isOpen, 'fixed');
 
@@ -49,47 +39,50 @@ export default function CreateGroup({ isOpen, onClose, onSubmit }){
         }));
     }
 
-    // Handle member selection
-    const handleMemberSelect = (user) => {
-        // Check if user is already selected
-        const isAlreadySelected = formData.members.some(member => member._id === user._id);
-        
-        if (!isAlreadySelected) {
-            setFormData(prev => ({
-                ...prev,
-                members: [...prev.members, user]
-            }));
-        }
-        setIsDropdownOpen(false);
-    }
-
-    // Handle member removal
-    const handleMemberRemove = (userId) => {
+    // Handle member toggle (checkbox style)
+    const handleMemberToggle = (userId) => {
         setFormData(prev => ({
             ...prev,
-            members: prev.members.filter(member => member._id !== userId)
+            members: prev.members.includes(userId)
+                ? prev.members.filter(id => id !== userId)
+                : [...prev.members, userId]
         }));
-    }
+        
+        // Clear error when user makes selection
+        if (errors.members) {
+            setErrors(prev => ({
+                ...prev,
+                members: ""
+            }));
+        }
+    };
 
-    // Get available users (not already selected)
-    const getAvailableUsers = () => {
-        return users.filter(user => 
-            !formData.members.some(member => member._id === user._id)
-        );
-    }
+    // Handle member removal from tags
+    const removeMember = (userId) => {
+        setFormData(prev => ({
+            ...prev,
+            members: prev.members.filter(id => id !== userId)
+        }));
+    };
 
     const validateForm = () => {
         const newErrors = {};
         if(!formData.title.trim()) newErrors.title = "Title is required";
         if(!formData.members.length) newErrors.members = "At least one member is required";
+        if(!formData.createdBy) newErrors.createdBy = "Created by is required"; 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        // console.log("Form data card 1:- ", formData);
+        onSubmit(formData);
         if(validateForm()){
-            onSubmit(formData);
+            setIsLoading(true);
+            // console.log("Form data  card 2:- ", formData);
+            setIsLoading(false);
+            handleClose();
         }
     }
     
@@ -98,6 +91,7 @@ export default function CreateGroup({ isOpen, onClose, onSubmit }){
         setFormData({
             title: "",
             members: [],
+            createdBy: "",
         });
         setErrors({});
         onClose();
@@ -137,81 +131,85 @@ export default function CreateGroup({ isOpen, onClose, onSubmit }){
                             {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
                         </label>
                     </div>
-                    {/* Selected Members Display */}
-                    {formData.members.length > 0 && (
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Selected Members:
-                            </label>
-                            <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-md border">
-                                {formData.members.map(member => (
-                                    <div 
-                                        key={member._id}
-                                        className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
-                                    >
-                                        <span>{member.FirstName} {member.LastName}</span>
-                                        <button
-                                            type="button"
-                                            onClick={() => handleMemberRemove(member._id)}
-                                            className="text-blue-600 hover:text-blue-800 ml-1"
-                                        >
-                                            <X size={14} />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Custom Multi-Select Dropdown */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Add Members:
+                    {/* Member Selection */}
+                    <div className="space-y-3">
+                        <label className="flex items-center text-sm font-semibold text-gray-700">
+                            <Users className="w-4 h-4 mr-2 text-gray-500" />
+                            Select Members
                         </label>
-                        <div className="relative">
-                            <button
-                                type="button"
-                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-left flex items-center justify-between ${
-                                    errors.members ? 'border-red-500' : 'border-gray-300'
-                                }`}
-                            >
-                                <span className="text-gray-500">
-                                    {getAvailableUsers().length > 0 ? 'Select members' : 'All members selected'}
-                                </span>
-                                <ChevronDown 
-                                    size={16} 
-                                    className={`text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
-                                />
-                            </button>
-                            
-                            {/* Dropdown Options */}
-                            {isDropdownOpen && (
-                                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
-                                    {getAvailableUsers().length > 0 ? (
-                                        getAvailableUsers().map(user => (
+                        
+                        {/* Selected Members Tags */}
+                        {formData.members.length > 0 && (
+                            <div className="flex flex-wrap gap-2 p-3 bg-blue-50 max-h-28 overflow-y-auto rounded-xl border border-blue-200">
+                                {formData.members.map(userId => {
+                                    const user = users.find(u => u._id === userId);
+                                    return user ? (
+                                        <span
+                                            key={userId}
+                                            className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200"
+                                        >
+                                            <User className="w-3 h-3 mr-1.5" />
+                                            {user.FirstName} {user.LastName}
                                             <button
-                                                key={user._id}
                                                 type="button"
-                                                onClick={() => handleMemberSelect(user)}
-                                                className="w-full px-3 py-2 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none flex items-center gap-2"
+                                                onClick={() => removeMember(userId)}
+                                                className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200 focus:outline-none transition-colors"
                                             >
-                                                <Users size={16} className="text-gray-400" />
-                                                <span>{user.FirstName} {user.LastName}</span>
+                                                <X size={12} />
                                             </button>
-                                        ))
-                                    ) : (
-                                        <div className="px-3 py-2 text-gray-500 text-sm">
-                                            All members have been selected
-                                        </div>
-                                    )}
+                                        </span>
+                                    ) : null;
+                                })}
+                            </div>
+                        )}
+                        
+                        {/* Member Selection List */}
+                        <div className={`max-h-48 overflow-y-auto border rounded-xl bg-white ${
+                            errors.members ? 'border-red-300' : 'border-gray-200'
+                        }`}>
+                            {users.length === 0 ? (
+                                <div className="px-4 py-4 text-center text-sm text-gray-500">
+                                    <Users className="w-6 h-6 mx-auto mb-2 text-gray-300" />
+                                    No users available
+                                </div>
+                            ) : (
+                                <div className="p-2">
+                                    {users.map(user => (
+                                        <label
+                                            key={user._id}
+                                            className="flex items-center px-3 py-3 hover:bg-gray-50 cursor-pointer rounded-lg transition-colors group"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.members.includes(user._id)}
+                                                onChange={() => handleMemberToggle(user._id)}
+                                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors"
+                                            />
+                                            <div className="ml-3 flex items-center">
+                                                <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                                                    <User className="w-4 h-4 text-gray-500" />
+                                                </div>
+                                                <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                                                    {user.FirstName} {user.LastName}
+                                                </span>
+                                            </div>
+                                        </label>
+                                    ))}
                                 </div>
                             )}
                         </div>
-                        {errors.members && <p className="text-red-500 text-xs mt-1">{errors.members}</p>}
+                        
+                        {errors.members && (
+                            <p className="text-red-500 text-sm mt-1 flex items-center">
+                                <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
+                                {errors.members}
+                            </p>
+                        )}
                     </div>
                     <div>
-                        <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">Create Group</button>
+                        <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                            onClick={handleSubmit}
+                        >Create Group</button>
                     </div>
                 </form>
             </div>

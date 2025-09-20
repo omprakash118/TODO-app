@@ -1,5 +1,6 @@
 const Router = require('express');
 const router = Router();
+const verifyJWT = require('../middleware/auth.middleware');
 
 const {
     createGroup,
@@ -11,12 +12,14 @@ const {
     getGroupMembers
 } = require('../controllers/group.controller');
 
-router.route('/new').post(createGroup);
+
+
+router.route('/new').post(verifyJWT, createGroup);
 router.route('/').get(getAllGroup);
 router.route('/:groupID').get(getGroupById);
-router.route('/:groupID').delete(deleteGroup);
-router.route('/addMembers').post(addMembers);
-router.route('/removeMembers').patch(removeMembers);
+router.route('/:groupID').delete(verifyJWT, deleteGroup);
+router.route('/addMembers').post(verifyJWT, addMembers);
+router.route('/removeMembers').patch(verifyJWT, removeMembers);
 router.route('/members/:groupID').get(getGroupMembers);
 
 module.exports = router;

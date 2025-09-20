@@ -3,12 +3,13 @@ import GroupCard from "../component/ui/GroupCard";
 import { useState } from "react";
 import CreateGroup from "../component/ui/CreateGroup";
 import axios from "axios";
+import { useToastContext } from "../component/ui/ToastProvider";
 
 export default function Groups(){
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groups, setGroups] = useState([]);
-
+    const { toast } = useToastContext();
     useEffect(() => {
         getGroups();
     }, []);
@@ -20,13 +21,19 @@ export default function Groups(){
         setGroups(data);
     }
 
-    const handleCreateGroup = (groupData) => {
+    const handleCreateGroup = async (groupData) => {
         console.log("Creating group:", groupData);
         setIsLoading(true);
+        console.log("Group data :- ", groupData);
+        const response = await axios.post('api/group/new', groupData);
+        const data = response.data.data;
+        console.log("Data :- ", data);
+        // setIsLoading(false);
         setTimeout(() => {
             setIsLoading(false);
-            console.log("Group created successfully!");
+            toast.success("Group created successfully!");
         }, 1000);
+        getGroups();
     };
     return(
         <div className="p-5">
