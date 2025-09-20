@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 // dotenv.require()
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(express.json());
 
 // ✅ Parse URL-encoded bodies (form submissions)
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 const authRoutes = require('./routes/auth.rutes.js');
 const userRoutes = require('./routes/user.routes.js');

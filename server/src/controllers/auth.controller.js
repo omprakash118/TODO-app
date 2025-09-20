@@ -26,8 +26,8 @@ const loginUser = asyncHandler(async (req,res) => {
 
     const loggedInUser = await User.findById(user._id).select("-password -refereshToken");
 
-    console.log("Tokes om :- ", tokens);
-    console.log("Logged in user :- ", loggedInUser);
+    // console.log("Tokes om :- ", tokens);
+    // console.log("Logged in user :- ", loggedInUser);
     
 
     return res
@@ -83,8 +83,10 @@ const registerUser = asyncHandler(async (req,res) => {
 });
 
 const logout = asyncHandler(async (req,res) => {
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
     res.status(200).json({
-        message : 'Hello bab from the Logout'
+        message : 'Logout successfully'
     })
 })
 

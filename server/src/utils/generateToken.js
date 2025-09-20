@@ -15,8 +15,8 @@ const generateTokens = async (userId) => {
 
         await user.save({ validateBeforeSave : false});
 
-        console.log("accessToken :- ", accessToken);
-        console.log("refereshToken :- ", refreshToken);
+        // console.log("accessToken :- ", accessToken);
+        // console.log("refereshToken :- ", refreshToken);
 
 
         return {accessToken , refreshToken};

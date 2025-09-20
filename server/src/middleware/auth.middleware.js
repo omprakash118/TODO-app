@@ -5,7 +5,8 @@ const User = require('../models/user.models');
 
 const verifyJWT = asyncHandler(async (req, __, next) => {
     try {
-        
+        // console.log("REQUEST :- ", req);
+        // console.log("cookies :- ", req.cookies);
         const token = req.cookies?.accessToken || req.header('Authorization')?.replace("Bearer ", "");
         console.log("Tokens ;- ", token);
         if(!token){
@@ -14,7 +15,7 @@ const verifyJWT = asyncHandler(async (req, __, next) => {
 
         const decodedToken = jwt.verify(token , process.env.ACCESS_TOKEN_SECRET);
 
-        console.log("Decoded Token :- ", decodedToken);
+        console.log("Decoded Token :- ", decodedToken); 
 
         const user = await User.findById(decodedToken._id).select("-password -refreshToken")
 

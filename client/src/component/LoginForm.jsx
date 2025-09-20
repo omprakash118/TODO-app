@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Mail, Eye, EyeOff, Lock } from "lucide-react";
 import Buttons from "./ui/Buttons";
 import { useNavigate , Link } from "react-router-dom";
+import { useToastContext} from "../component/ui/ToastProvider"
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,7 +10,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
+  const { toast } = useToastContext();
   const togglePassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (e) => {
@@ -33,14 +34,14 @@ export default function LoginForm() {
 
           console.log("✅ Login success:", data);
 
-          if(data.accessToken) localStorage.setItem("accessToken" , data.accessToken);
+          // if(data.accessToken) localStorage.setItem("accessToken" , data.accessToken);
 
-          alert("Login successful 🎉")
+          toast.success("Login successful 🎉")
 
           navigate('/dashboard');
         } catch (err) {
           console.error("❌ Login error:", err);
-          alert(err.message);
+          toast.error(err.message);
         }finally {
           setIsLoading(false);
         }
