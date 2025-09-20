@@ -135,6 +135,17 @@ const removeMembers = asyncHandler(async (req,res) => {
     
 });
 
+const getGroupMembers = asyncHandler(async (req,res) => {
+    const { groupID } = req.params;
+    if(!groupID) throw new ApiError(400, "Group ID required");
+    const group = await Group.findById(groupID) 
+        .populate("members", "FirstName LastName");
+    if(!group) throw new ApiError(404, "Group not found");
+    const members = group.members;
+
+    return res.status(200).json(new ApiResponse(200, members, "Group members fetched successfully"));
+});
+
 module.exports = {
     createGroup,
     getAllGroup,
@@ -142,4 +153,5 @@ module.exports = {
     getGroupById,
     addMembers,
     removeMembers,
+    getGroupMembers
 };

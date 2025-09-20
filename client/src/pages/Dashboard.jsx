@@ -22,7 +22,7 @@ function Dashboard(){
     useEffect(() => {
         getDashboardData();
         getTasks();
-    }, []);
+    }, [isLoading]);
 
     const getDashboardData = async () => {
         try{
@@ -57,17 +57,16 @@ function Dashboard(){
         }
     }
 
-    const handleCreateTask = (taskData) => {
-        console.log("Creating task:", taskData);
-        // Here you would typically send the data to your API
-        // For now, we'll just log it
-        setIsLoading(true);
-        
-        // Simulate API call
-        setTimeout(() => {
+    const handleCreateTask = async (taskData) => {
+        try {
+            setIsLoading(true);
+            const response = await axios.post("api/task", taskData);
+            // console.log("Response :- ", response);
+        } catch (error) {
+            console.log("Error :- ", error);
+        }finally {
             setIsLoading(false);
-            console.log("Task created successfully!");
-        }, 1000);
+        }
     };
 
     return (

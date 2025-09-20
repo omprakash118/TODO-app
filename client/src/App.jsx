@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from './pages/Login'
 import Register from './pages/Register'
 import MainComponent from './component/MainComponent'
+import { GlobalLoaderProvider } from './component/ui/GlobalLoaderProvider'
+import { ToastProvider } from './component/ui/ToastProvider'
 
 function App() {
   
@@ -11,12 +13,17 @@ function App() {
     <>
    
     <BrowserRouter>
-      <Routes>
-        <Route path='/login' element={ <LoginPage /> } />
-        <Route path='/Register' element={ <Register /> } />
-        <Route path='/*' element={ <MainComponent /> } />
-        {/* <Route path='/' element={<Navigate to = "/login" />} /> */}
-      </Routes>
+      <GlobalLoaderProvider>
+        <ToastProvider>
+          <Routes>
+            <Route path='/' element={ <LoginPage /> } />
+            <Route path='/login' element={ <LoginPage /> } />
+            <Route path='/Register' element={ <Register /> } />
+            <Route path='/dashboard' element={ <MainComponent /> } />
+            <Route path='/*' element={<MainComponent />} />
+          </Routes>
+        </ToastProvider>
+      </GlobalLoaderProvider>
     </BrowserRouter>
 
     </>

@@ -4,7 +4,6 @@ import HeadingTask from "../component/ui/HeadingTask";
 import SearchBar from "../component/ui/SearchBar";
 import CreateTaskModal from "../component/ui/CreateTaskModal";
 import axios from "axios";
-
 export default function Task(){
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,10 +11,9 @@ export default function Task(){
     const [inProgressTasks, setInProgressTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
 
-
     useEffect(() => {
         getTasks();
-    }, [])
+    }, [isLoading])
 
     const getTasks = async () => {      
         const response = await axios.get('api/task');
@@ -25,17 +23,25 @@ export default function Task(){
         setCompletedTasks(data.filter(task => task.status === "completed"));
     }
 
-    const handleCreateTask = (taskData) => {
-        console.log("Creating task:", taskData);
-        // Here you would typically send the data to your API
-        // For now, we'll just log it
-        setIsLoading(true);
-        
-        // Simulate API call
-        setTimeout(() => {
+    const handleCreateTask = async (taskData) => {
+        try {
+            setIsLoading(true);
+            const response = await axios.post("api/task", taskData);
+
+            // console.log("Response :- ", response);
+            if(response.status === 201){
+                // toast.success("Task created successfully!");
+                console.log("Response :- ", response);
+            }else{
+                // toast.error("Failed to create task. Please try again.");
+                console.log("Response :- ", response);
+            }
+        } catch (error) {
+            console.log("Error :- ", error);
+            // toast.error("Failed to create task. Please try again.");
+        }finally {
             setIsLoading(false);
-            console.log("Task created successfully!");
-        }, 1000);
+        }
     };
     return(
         <div className="p-5">
