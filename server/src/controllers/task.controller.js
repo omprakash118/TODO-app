@@ -18,18 +18,18 @@ const createTask = asyncHandler(async (req,res) => {
 
     const io = req.app.get("io");
     // const { groupID } = req.params;
-    const { groupID, title, description , priority , status , dueDate , assignTo } = req.body;
+    const { groupID, title, description , priority , status , dueDate , assignTo, createdBy } = req.body;
     // const userID = req.user._id;
-    const userID = "689b89feb105348cf9ad3e53";
+    // const userID = "689b89feb105348cf9ad3e53";
 
     // 1. Find the Group
     const group = await Group.findById(groupID);
     if(!group) throw new ApiError(403, "Group Not Found");
 
-    // 2. Check the User
-    if(group.createdBy.toString() !== userID.toString()){
-        throw new ApiError(403, "Only group creater can assign tasks");
-    }
+    // // 2. Check the User
+    // if(group.createdBy.toString() !== userID.toString()){
+    //     throw new ApiError(403, "Only group creater can assign tasks");
+    // }
 
     const invalidUser = assignTo.filter(uid => 
         !group.members.map(m => m.toString()).includes(uid)
@@ -45,7 +45,7 @@ const createTask = asyncHandler(async (req,res) => {
         dueDate,
         assignTo,
         group : groupID,
-        createdBy : userID,
+        createdBy,
     })
 
     await User.updateMany(

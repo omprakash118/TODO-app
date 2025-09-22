@@ -9,14 +9,16 @@ const createGroup = asyncHandler(async (req,res) => {
     // console.log("Resqusdf a:- ", req);
     const { title , createdBy , members = []} = req.body;
 
+    
     const findTitle = await Group.findOne({title});
     console.log("Title :- ", findTitle);
     if(findTitle) throw new ApiError(409, 'The Same Title group already exist');
-
+    
     if(!title || !createdBy || !Array.isArray(members) || members.length === 0) {
         throw new ApiError(400 , "All Field Required");
     }
-
+    members.push(createdBy);
+    
     const newGroup = await Group.create({ title , createdBy , members});
 
     await User.updateOne(
@@ -36,7 +38,7 @@ const createGroup = asyncHandler(async (req,res) => {
 const getAllGroup = asyncHandler(async (req,res) => {
     const group = await Group.find()
         .populate('createdBy' , 'FirstName LastName')
-        .populate('members' , 'FirstName LastName');
+        .populate('members' , 'FirstName LastName position');
 
     return res.status(200).json(new ApiResponse(200, group ,"All group find successfully"));
 });
@@ -48,7 +50,21 @@ const getGroupById = asyncHandler(async (req,res) => {
 
     const group = await Group.findById(groupID)
         .populate('createdBy' , 'FirstName LastName')
-        .populate('members' , 'FirstName LastName');
+        .populate('members' , 'FirstName LastName position email')
+        .populate({
+            path: "tasks",
+            select: "title description priority status dueDate createdBy assignTo",
+            populate: [
+              {
+                path: "createdBy",
+                select: "FirstName LastName",
+              },
+              {
+                path: "assignTo",
+                select: "FirstName LastName",
+              },
+            ],
+          });
 
     if(!group) throw new ApiError(404, "Group Not Found");
 
@@ -108,7 +124,7 @@ const addMembers = asyncHandler(async (req,res) => {
 
     const updatedGroup = await Group.findById(groupID)
         .populate('createdBy', 'FirstName LastName')
-        .populate('members', 'FirstName LastName');
+        .populate('members', 'FirstName LastName position');
 
     return res.status(200).json(new ApiResponse(200, updatedGroup, "Group Updated Successfully"));
 });
@@ -129,7 +145,7 @@ const removeMembers = asyncHandler(async (req,res) => {
 
     const updatedGroup = await Group.findById(groupID)
         .populate("createdBy", "FirstName LastName")
-        .populate("members", "FirstName LastName");   
+        .populate("members", "FirstName LastName position");   
     
     return res.status(200).json(new ApiResponse(200, updatedGroup, "Members removed successfully"));
     
@@ -139,7 +155,7 @@ const getGroupMembers = asyncHandler(async (req,res) => {
     const { groupID } = req.params;
     if(!groupID) throw new ApiError(400, "Group ID required");
     const group = await Group.findById(groupID) 
-        .populate("members", "FirstName LastName");
+        .populate("members", "FirstName LastName position");
     if(!group) throw new ApiError(404, "Group not found");
     const members = group.members;
 

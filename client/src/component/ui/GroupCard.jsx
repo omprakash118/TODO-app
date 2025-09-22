@@ -1,5 +1,6 @@
 import React from "react";
 import { Users , PenBoxIcon, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Function to handle date formatting
 const handleDate = (dateString) => {
@@ -41,14 +42,18 @@ export default function GroupCard({
     tasks = [],
     createdAt = '',
     createdBy = '',
+    groupID = '',
 }){
+    const navigate = useNavigate();
     return(
-        <div className="p-6 bg-white text-[#344256] shadow-[#c5c5c53f] shadow-sm rounded-[10px] border-[1px] border-[#e5e7eb] w-auto flex flex-col gap-2">
+        <div className="p-6 bg-white text-[#344256] shadow-[#c5c5c53f] shadow-sm rounded-[10px] border-[1px] border-[#e5e7eb] w-auto flex flex-col gap-2 cursor-pointer hover:shadow-sm hover:shadow-gray-500/50 transition-all duration-200"
+        onClick={() => navigate(`/group/${groupID}`)}
+        >
             <div>
                 <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-row gap-2 items-center">
                     <Users size={20} className="text-[#3c83f6]" />
-                    <h1 className="text-lg font-semibold">{title}</h1>
+                    <h1 className="text-lg font-semibold cursor-pointer hover:text-[#3c83f6] hover:underline" onClick={() => navigate(`/group/${groupID}`)}>{title}</h1>
                 </div>
                 <div className="flex flex-row gap-2 justify-center items-center text-center">
                     <button className="hover:scale-[1.02]  hover:text-[#3c83f6]  hover:bg-gray-50  rounded-full  focus:scale-[0.98] transition-all duration-200 cursor-pointer p-1">

@@ -40,7 +40,7 @@ function MainComponent(){
                     <Route path="/" element={<Dashboard />}  />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/tasks" element={<Task />}  />
-                    <Route path="/groups" element={<Groups />}  />
+                    <Route path="/group" element={<Groups />}  />
                     <Route path="/group/:groupID" element={<GroupDetailspage />}  />
                   </Routes>
                 </main>

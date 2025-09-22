@@ -18,8 +18,8 @@ router.route('/new').post(verifyJWT, createGroup);
 router.route('/').get(getAllGroup);
 router.route('/:groupID').get(getGroupById);
 router.route('/:groupID').delete(verifyJWT, deleteGroup);
-router.route('/addMembers').post(verifyJWT, addMembers);
-router.route('/removeMembers').patch(verifyJWT, removeMembers);
+router.route('/addMembers').post(verifyJWT, addMembers);    
+router.route('/removeMembers').post(verifyJWT, removeMembers);
 router.route('/members/:groupID').get(getGroupMembers);
 
 module.exports = router;

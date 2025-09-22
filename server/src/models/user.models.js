@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
         ref : 'Task',
         default : []
     }],
+    position : {
+        type : String,
+        default : ''
+    },
     refreshToken : {
         type : String,
         default : ''

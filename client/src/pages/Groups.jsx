@@ -53,7 +53,7 @@ export default function Groups(){
             </div>
             <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
                 {groups.map((group) => (
-                    <GroupCard  title={group.title}  members={group.members} tasks={group.tasks} createdAt={group.createdAt} createdBy={group.createdBy}/>
+                    <GroupCard  title={group.title}  members={group.members} tasks={group.tasks} createdAt={group.createdAt} createdBy={group.createdBy} groupID={group._id}/>
                 ))}
             </div>
             <CreateGroup 

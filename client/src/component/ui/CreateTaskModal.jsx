@@ -6,7 +6,7 @@ import { useGlobalLoaderContext } from "./GlobalLoaderProvider";
 import { useToastContext } from "./ToastProvider";
 import axios from "axios";
 
-export default function CreateTaskModal({ isOpen, onClose, onSubmit }) {
+export default function CreateTaskModal({ isOpen, onClose, onSubmit ,isGroupPage = false , groupID = "" }) {
   // Fallback for when GlobalLoader context is not available
   let loaders, hideLoader;
   try {
@@ -34,6 +34,7 @@ export default function CreateTaskModal({ isOpen, onClose, onSubmit }) {
   const hideLoading = useCallback(() => {
     hideLoader();
   }, [hideLoader]);
+  let userID;
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -41,35 +42,43 @@ export default function CreateTaskModal({ isOpen, onClose, onSubmit }) {
     priority: "medium",
     groupID: "",
     status: "pending",
-    assignTo: []
+    assignTo: [],
+    createdBy: "",
   });
   const [groups, setGroups] = useState([]);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    userID = localStorage.getItem("userID");
+    formData.createdBy = userID;
     const getGroups = async () => {
       try {
-        const response = await axios.get('api/group');
+        const response = await axios.get('/api/group');
         const data = response.data.data;
-        console.log("created task Groups :- ", data);
-        setGroups(data);
+        if(isGroupPage && groupID){
+          const group = data.filter(group => group._id === groupID);
+          setGroups(group);
+        }else{
+          setGroups(data);
+        }
         console.log("set groups data :- ", setGroups)
       } catch (error) {
-        console.log("Error :- ", error);
-        toast.error("Failed to load groups. Please try again.");
+        console.error("Error :- ", error);
+        toast.error("Failed to load groups. Please try again");
       }
     }
     getGroups();
-  }, [toast]); // Only run once when component mounts
+  }, []); // Only run once when component mounts
 
   useEffect(() => {
     const getUsers = async () => {
       if (formData.groupID) {
         try {
-          const response = await axios.get(`api/group/members/${formData.groupID}`);
+          userID = localStorage.getItem("userID");
+          const response = await axios.get(`/api/group/members/${formData.groupID}`);
           const data = response.data.data;
-          // console.log("Users :- ", data);
-          setUsers(data);
+          const filteredUsers = data.filter(user => user._id !== userID);
+          setUsers(filteredUsers);
         } catch (error) {
           console.log("Error :- ", error);
           toast.error("Failed to load group members. Please try again.");
@@ -79,7 +88,7 @@ export default function CreateTaskModal({ isOpen, onClose, onSubmit }) {
       }
     }
     getUsers();
-  }, [formData.groupID, toast]); // Only depend on formData.groupID
+  }, [formData.groupID, toast, userID]); // Only depend on formData.groupID
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -166,10 +175,18 @@ export default function CreateTaskModal({ isOpen, onClose, onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(isGroupPage){
+      userID = localStorage.getItem("userID");
+      formData.createdBy = userID;
+    }
+    console.log("created BY :- ", userID)
     if (validateForm()) {
       try {
         loaders.creatingTask();
-        // console.log("Form data :- ", formData);
+
+        
+
+        console.log("Form data :- ", formData);
         // console.log("OMsubmit :- ", onSubmit);
         await onSubmit(formData);
         // Reset form
@@ -180,7 +197,8 @@ export default function CreateTaskModal({ isOpen, onClose, onSubmit }) {
           priority: "medium",
           groupID: "",
           status: "pending",
-          assignTo: []
+          assignTo: [],
+          createdBy: "",
         });
         setErrors({});
         onClose();
@@ -205,7 +223,8 @@ export default function CreateTaskModal({ isOpen, onClose, onSubmit }) {
       priority: "medium",
       groupID: "",
       status: "pending",
-      assignTo: []
+      assignTo: [],
+      createdBy: "",
     });
     setErrors({});
     onClose();

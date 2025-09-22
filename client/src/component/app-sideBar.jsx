@@ -36,7 +36,7 @@ export function Sidebar({ open , setOpen, isMobile }){
                     {open && <h1 className="p-4 text-gray-800 ">Main</h1>}
                     <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" open={open} to="/dashboard" onClick={() => { if(isMobile) setOpen(false)}} />
                     <SidebarItem icon={<CheckSquare size={20} />} label="Tasks" open={open} to="/tasks" onClick={() => { if(isMobile) setOpen(false)}} />
-                    <SidebarItem icon={<Users size={20} />} label="Groups" open={open} to="/groups" onClick={() => { if(isMobile) setOpen(false)}} />
+                    <SidebarItem icon={<Users size={20} />} label="Groups" open={open} to="/group" onClick={() => { if(isMobile) setOpen(false)}} />
                 </nav>
         </aside>
     )
@@ -44,7 +44,7 @@ export function Sidebar({ open , setOpen, isMobile }){
 
 function SidebarItem({icon, label, open, to, onClick}){
     const location = useLocation();
-    const isActive = location.pathname === to || (to === '/dashboard' && location.pathname === '/');
+    const isActive = location.pathname === to || (to === '/dashboard' && location.pathname === '/') || (to === '/group' && location.pathname.startsWith('/group'));
     
     return (
         <Link 
