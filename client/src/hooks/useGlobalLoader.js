@@ -13,6 +13,9 @@ const useGlobalLoader = () => {
   });
 
   const showLoader = useCallback((options = {}) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('GlobalLoader: Showing loader with options:', options);
+    }
     setLoaderState(prev => ({
       ...prev,
       isVisible: true,
@@ -21,6 +24,9 @@ const useGlobalLoader = () => {
   }, []);
 
   const hideLoader = useCallback(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('GlobalLoader: Hiding loader');
+    }
     setLoaderState(prev => ({
       ...prev,
       isVisible: false,
@@ -28,6 +34,9 @@ const useGlobalLoader = () => {
   }, []);
 
   const updateProgress = useCallback((progress) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('GlobalLoader: Updating progress to:', progress);
+    }
     setLoaderState(prev => ({
       ...prev,
       progress: Math.max(0, Math.min(100, progress)),
@@ -105,6 +114,19 @@ const useGlobalLoader = () => {
       }),
   };
 
+  // Debug utility function
+  const debugLoader = useCallback(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('GlobalLoader Debug Info:', {
+        currentState: loaderState,
+        isVisible: loaderState.isVisible,
+        type: loaderState.type,
+        message: loaderState.message,
+        progress: loaderState.progress,
+      });
+    }
+  }, [loaderState]);
+
   return {
     loaderState,
     showLoader,
@@ -113,6 +135,7 @@ const useGlobalLoader = () => {
     showSpinner,
     showProgressBar,
     loaders,
+    debugLoader,
   };
 };
 

@@ -82,7 +82,7 @@ const GlobalLoader = ({
       <>
         {/* Backdrop Overlay */}
         {overlay && (
-          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9998] flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9999] flex items-center justify-center">
             <div className={`bg-white rounded-2xl shadow-2xl ${sizeConfig[size].container} ${className}`}>
               <div className="flex flex-col items-center space-y-3">
                 <Loader2 
@@ -120,7 +120,7 @@ const GlobalLoader = ({
   // Progress Bar Loader
   if (type === "progress") {
     return (
-      <div className={`fixed top-0 left-0 right-0 z-[9999] ${className}`}>
+      <div className={`fixed top-0 left-0 right-0 z-[10000] ${className}`}>
         <div className="w-full bg-gray-200 h-1">
           <div
             className={`h-full ${colorConfig[color].progress} transition-all duration-500 ease-out`}

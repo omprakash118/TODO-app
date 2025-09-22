@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import GlobalLoader from './GlobalLoader';
 import useGlobalLoader from '../../hooks/useGlobalLoader';
 
@@ -14,6 +14,13 @@ export const useGlobalLoaderContext = () => {
 
 export const GlobalLoaderProvider = ({ children }) => {
   const loaderHook = useGlobalLoader();
+
+  // Debug logging to track loader state changes
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('GlobalLoader state changed:', loaderHook.loaderState);
+    }
+  }, [loaderHook.loaderState]);
 
   return (
     <GlobalLoaderContext.Provider value={loaderHook}>
