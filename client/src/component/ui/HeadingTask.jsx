@@ -1,12 +1,16 @@
 import React from "react";
 import TaskCard from "./TaskCard";
 import Notaskpresent from "./Notaskpresent";
+// import Model from "./Model";
+// import TaskDetailsModal from "./TaskDetailsModal";
 
 function HeadingTask({
     title = '',
-    tasks = []
+    tasks = [],
 }){
+    
     return (
+        <>
         <div className="flex flex-col gap-3">
             <div className="flex flex-row items-end gap-2 text-[#344256]">
                 <h1 className="text-xl  font-semibold ">{title}</h1>
@@ -23,6 +27,7 @@ function HeadingTask({
                         priority={task.priority}
                         groupTitle={task.group.title}
                         assignBy={task.createdBy.FirstName + " " + task.createdBy.LastName}
+                        task={task}
                     />
                 ))
                 ) : (
@@ -30,6 +35,17 @@ function HeadingTask({
                 )}
             </div>
         </div>
+
+        {/* <Model isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                <div>
+                    <h1></h1>
+                </div>
+        </Model> */}
+
+
+        </>
+
+        
     );
 }
 

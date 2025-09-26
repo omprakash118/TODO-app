@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { CalendarIcon } from "lucide-react";
+import TaskDetailsModal from "./TaskDetailsModal";
 
 const statusStyles = {
     pending: "bg-[#f3f4f6] text-[#344256]",
@@ -20,10 +21,13 @@ function TaskCard({
     status = '',
     priority = '',
     groupTitle = '',
-    assignBy = ''
+    assignBy = '',
+    task = {},
 }){
+    const [isOpenTaskDetailsModal, setIsOpenTaskDetailsModal] = useState(false);
     return (
-        <div className="p-6 bg-white text-[#344256] shadow-[#c5c5c53f] shadow-sm rounded-[10px] border-[1px] border-[#e5e7eb] w-auto flex flex-col gap-2">
+        <>
+        <div className="p-6 bg-white text-[#344256] shadow-[#c5c5c53f] shadow-sm rounded-[10px] border-[1px] border-[#e5e7eb] w-auto flex flex-col gap-2 cursor-pointer" onClick={() => setIsOpenTaskDetailsModal(true)}>
             <div>
                 <h1 className="text-sm font-semibold">{title}</h1>
                 <p className="text-[#94a3b8] text-xs mt-1">{description}</p>
@@ -55,6 +59,14 @@ function TaskCard({
                 </div>
             </div>
         </div>
+
+        <TaskDetailsModal 
+        isOpen={isOpenTaskDetailsModal}
+        onClose={() => setIsOpenTaskDetailsModal(false)}
+        task={task}
+          groupMembers={[]}
+        />
+        </>
     )
 }
 

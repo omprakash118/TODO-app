@@ -63,9 +63,9 @@ export default function Task(){
                 <SearchBar />
             </div>
             <div className="mt-6 flex flex-col gap-6">
-                <HeadingTask title="Pending" tasks={pendingTasks} />
-                <HeadingTask title="In Progress" tasks={inProgressTasks} />
-                <HeadingTask title="Completed" tasks={completedTasks} />
+                <HeadingTask title="Pending" tasks={pendingTasks}  />
+                <HeadingTask title="In Progress" tasks={inProgressTasks}  />
+                <HeadingTask title="Completed" tasks={completedTasks}  />
             </div>
             <CreateTaskModal 
                 isOpen={isModalOpen}

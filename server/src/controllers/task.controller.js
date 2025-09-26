@@ -168,6 +168,7 @@ const updateTask = asyncHandler(async (req, res) => {
     )
   }
 
+  console.log("updatedTask :- ", updatedTask);
   if (!updatedTask) {
     throw new ApiError(404, "Task not found");
   }
